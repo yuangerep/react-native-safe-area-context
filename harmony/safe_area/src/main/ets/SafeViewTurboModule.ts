@@ -75,17 +75,32 @@ export class SafeAreaViewTurboModule extends TurboModule {
       const windowInfo = this.windowInstance.getWindowProperties()
       const avoidArea = this.windowInstance.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
       const avoidAreaBottom = this.windowInstance.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR);
-      frame = {
-        x: px2vp(windowInfo.windowRect.left),
-        y: px2vp(windowInfo.windowRect.top),
-        width: px2vp(windowInfo.windowRect.width),
-        height: px2vp(windowInfo.windowRect.height)
-      }
-      insets = {
-        top: px2vp(avoidArea.topRect.height),
-        right: px2vp(avoidArea.rightRect.height),
-        bottom: px2vp(avoidAreaBottom.bottomRect.height),
-        left: px2vp(avoidArea.leftRect.height)
+      if (!windowInfo.isLayoutFullScreen) {
+        frame = {
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0
+        }
+        insets = {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      } else {
+        frame = {
+          x: px2vp(windowInfo.windowRect.left),
+          y: px2vp(windowInfo.windowRect.top),
+          width: px2vp(windowInfo.windowRect.width),
+          height: px2vp(windowInfo.windowRect.height)
+        }
+        insets = {
+          top: px2vp(avoidArea.topRect.height),
+          right: px2vp(avoidArea.rightRect.height),
+          bottom: px2vp(avoidAreaBottom.bottomRect.height),
+          left: px2vp(avoidArea.leftRect.height)
+        }
       }
     }
     return { "initialWindowMetrics": { frame, insets } }
